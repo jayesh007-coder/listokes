@@ -54,7 +54,7 @@ export function ExpensesView({ onRequireAuth }: ExpensesViewProps) {
   // New Expense Modal State
   const [modalVisible, setModalVisible] = useState(false);
   const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState('USD');
+  const [currency, _setCurrency] = useState('USD');
   const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory>('food');
   const [merchant, setMerchant] = useState('');
   const [description, setDescription] = useState('');

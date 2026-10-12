@@ -56,9 +56,16 @@ class Settings(BaseSettings):
         elif url.startswith("postgresql://") and not url.startswith("postgresql+asyncpg://"):
             url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-        # asyncpg prefers ssl=require instead of sslmode=require
-        if "sslmode=require" in url:
-            url = url.replace("sslmode=require", "ssl=require")
+        import re
+
+        # Remove unsupported parameters such as channel_binding
+        url = re.sub(r"[?&]channel_binding=[^&]+", "", url)
+
+        # asyncpg prefers ssl=require instead of sslmode=...
+        url = re.sub(r"sslmode=[^&]+", "ssl=require", url)
+
+        # Clean up query string artifacts (e.g. ?& or trailing ?)
+        url = url.replace("?&", "?").rstrip("?&")
 
         return url
 

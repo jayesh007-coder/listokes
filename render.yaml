@@ -1,8 +1,6 @@
 # Render.com Blueprint — Free Hosting for Listokes Backend & Database
 # Learn more: https://render.com/docs/blueprint-spec
 
-version: "1"
-
 services:
   - type: web
     name: listokes-api

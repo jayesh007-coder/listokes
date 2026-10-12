@@ -1,8 +1,8 @@
 """
 Authentication & Authorization utilities.
 
-- Password hashing (bcrypt)
-- JWT token creation / verification
+- Native bcrypt password hashing (no passlib incompatibilities)
+- PyJWT token creation / verification
 - FastAPI dependency to extract the current user from a request
 """
 
@@ -11,8 +11,8 @@ from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from passlib.context import CryptContext
+import jwt
+import bcrypt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,20 +20,25 @@ from app.config import settings
 from app.database import get_db
 from app.models.user import User
 
-# ── Password hashing ────────────────────────────────────
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+# ── Password hashing (native bcrypt) ─────────────────────
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    """Hash a password using bcrypt."""
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    """Verify a password against its bcrypt hash."""
+    try:
+        return bcrypt.checkpw(
+            plain_password.encode("utf-8"), hashed_password.encode("utf-8")
+        )
+    except Exception:
+        return False
 
 
-# ── JWT helpers ──────────────────────────────────────────
+# ── JWT helpers (PyJWT) ──────────────────────────────────
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
@@ -61,7 +66,7 @@ def decode_token(token: str) -> dict:
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
         return payload
-    except JWTError:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",

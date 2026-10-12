@@ -5,6 +5,7 @@ Run with:
     uvicorn app.main:app --reload --port 8000
 """
 
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -24,11 +25,20 @@ from app.routers import auth, tasks, expenses, subscriptions
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    On startup: create tables if they don't exist (development convenience).
-    In production, use Alembic migrations instead.
+    On startup: create tables with retry logic for cloud database warm-up.
     """
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    for attempt in range(1, 6):
+        try:
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+            print("Database connected and tables verified.")
+            break
+        except Exception as e:
+            print(f"Database connection attempt {attempt}/5 failed: {e}")
+            if attempt == 5:
+                print("Proceeding without initial table creation. Endpoints will retry on query.")
+            else:
+                await asyncio.sleep(2)
     yield
     await engine.dispose()
 

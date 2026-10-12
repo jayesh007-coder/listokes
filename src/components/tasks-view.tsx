@@ -31,14 +31,14 @@ interface TasksViewProps {
 }
 
 export function TasksView({ onRequireAuth }: TasksViewProps) {
-  const { isAuthenticated, isServerOnline } = useAuth();
+  const { isAuthenticated, isServerOnline: _isServerOnline } = useAuth();
   const theme = useTheme();
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [_refreshing, setRefreshing] = useState(false);
   const [statusFilter, setStatusFilter] = useState<TaskStatus | 'all'>('all');
-  const [priorityFilter, setPriorityFilter] = useState<TaskPriority | 'all'>('all');
+  const [priorityFilter, _setPriorityFilter] = useState<TaskPriority | 'all'>('all');
 
   // New Task Modal State
   const [modalVisible, setModalVisible] = useState(false);
