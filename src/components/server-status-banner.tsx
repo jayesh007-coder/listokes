@@ -157,6 +157,14 @@ export function ServerStatusBanner() {
 
             <View style={styles.modalButtonsRow}>
               <Pressable
+                onPress={() => setInputUrl('https://listokes-api.onrender.com')}
+                style={styles.presetButton}>
+                <ThemedText type="small" style={{ color: '#8B5CF6', fontWeight: '600' }}>
+                  ☁️ Render Cloud
+                </ThemedText>
+              </Pressable>
+
+              <Pressable
                 onPress={() => {
                   setInputUrl(
                     Platform.OS === 'android'
@@ -165,7 +173,7 @@ export function ServerStatusBanner() {
                   );
                 }}
                 style={styles.presetButton}>
-                <ThemedText type="small">Reset Default</ThemedText>
+                <ThemedText type="small">Reset Local</ThemedText>
               </Pressable>
 
               <Pressable
