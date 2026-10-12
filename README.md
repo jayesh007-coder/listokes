@@ -1,56 +1,55 @@
-# Welcome to your Expo app 👋
+# Listokes — AI Life Optimization Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/jayesh007-coder/listokes)
 
-## Get started
+A full-stack server-based personal life optimization application:
+- **Backend**: Python FastAPI with async PostgreSQL engine (`asyncpg` + `SQLAlchemy 2.0`), bcrypt password hashing, and HS256 JWT tokens.
+- **Database**: PostgreSQL 16 with UUID primary keys and foreign-key isolation.
+- **Frontend**: React Native Expo SDK 57 (iOS, Android, Web) with reactive auth state and live server sync.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🚀 1-Click Free Cloud Hosting (Render.com)
 
-2. Start the app
+Click the button above or follow these steps:
+1. Open [https://render.com/deploy?repo=https://github.com/jayesh007-coder/listokes](https://render.com/deploy?repo=https://github.com/jayesh007-coder/listokes).
+2. Sign in with GitHub.
+3. Render reads [`render.yaml`](./render.yaml) and automatically provisions:
+   - **`listokes-api`**: Free FastAPI Web Service with HTTPS URL (`https://listokes-api.onrender.com`).
+   - **`listokes-db`**: Free Managed PostgreSQL Database.
+4. Click **Apply** — your backend is online 24/7!
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 📱 Running the Mobile Frontend
 
 ```bash
-npm run reset-project
+# Install dependencies
+npm install
+
+# Start on web browser
+npm run web
+
+# Or start on Android / iOS
+npm run android
+npm run ios
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Connect App to Hosted Backend:
+1. Open the Listokes mobile app.
+2. Tap the **Backend Status Banner** at the top.
+3. Enter your live cloud URL (e.g. `https://listokes-api.onrender.com`).
+4. Tap **Save & Test** — the indicator turns green (**Backend Online**).
 
-### Other setup steps
+---
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## 💻 Running the Backend Locally (Optional)
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate       # On Windows
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+Interactive API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
