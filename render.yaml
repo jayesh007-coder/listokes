@@ -1,0 +1,34 @@
+# Render.com Blueprint — Free Hosting for Listokes Backend & Database
+# Learn more: https://render.com/docs/blueprint-spec
+
+version: "1"
+
+services:
+  - type: web
+    name: listokes-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL
+        fromDatabase:
+          name: listokes-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: DEBUG
+        value: "false"
+
+databases:
+  - name: listokes-db
+    databaseName: listokes
+    user: listokes
+    plan: free
