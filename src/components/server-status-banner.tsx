@@ -160,20 +160,32 @@ export function ServerStatusBanner() {
                 onPress={() => setInputUrl('https://listokes-api.onrender.com')}
                 style={styles.presetButton}>
                 <ThemedText type="small" style={{ color: '#8B5CF6', fontWeight: '600' }}>
-                  ☁️ Render Cloud
+                  ☁️ Cloud
+                </ThemedText>
+              </Pressable>
+
+              <Pressable
+                onPress={() => setInputUrl('http://10.236.142.84:8000')}
+                style={styles.presetButton}>
+                <ThemedText type="small" style={{ color: '#10B981', fontWeight: '600' }}>
+                  📱 Wi-Fi:8000
+                </ThemedText>
+              </Pressable>
+
+              <Pressable
+                onPress={() => setInputUrl('http://10.236.142.84:8081')}
+                style={styles.presetButton}>
+                <ThemedText type="small" style={{ color: '#3B82F6', fontWeight: '600' }}>
+                  ⚡ Wi-Fi:8081
                 </ThemedText>
               </Pressable>
 
               <Pressable
                 onPress={() => {
-                  setInputUrl(
-                    Platform.OS === 'android'
-                      ? 'http://10.0.2.2:8000'
-                      : 'http://localhost:8000'
-                  );
+                  setInputUrl('http://localhost:8000');
                 }}
                 style={styles.presetButton}>
-                <ThemedText type="small">Reset Local</ThemedText>
+                <ThemedText type="small">Local</ThemedText>
               </Pressable>
 
               <Pressable

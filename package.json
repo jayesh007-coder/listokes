@@ -43,7 +43,9 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "backend:start": "cd backend && uvicorn app.main:app --reload --port 8000",
+    "backend:start:8081": "cd backend && uvicorn app.main:app --reload --port 8081",
     "backend:tunnel": "npx localtunnel --port 8000",
+    "backend:tunnel:8081": "npx localtunnel --port 8081",
     "backend:docker": "docker compose -f backend/docker-compose.yml up --build"
   },
   "private": true
