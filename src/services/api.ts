@@ -194,11 +194,15 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
 
   let res: Response;
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
     res = await fetch(endpointUrl, {
       method,
       headers: reqHeaders,
       body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
     });
+    clearTimeout(timeoutId);
   } catch {
     throw new ApiError(
       0,
@@ -320,7 +324,10 @@ export const subscriptionService = {
 
 export async function checkServerHealth(): Promise<boolean> {
   try {
-    const res = await fetch(`${currentServerUrl}/health`);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    const res = await fetch(`${currentServerUrl}/health`, { signal: controller.signal });
+    clearTimeout(timeout);
     return res.ok;
   } catch {
     return false;
